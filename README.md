@@ -1,12 +1,5 @@
 # Distributed Movie Recommendation and User Analysis System
 
-| | |
-|---|---|
-| **Name** | Nitesh Kumar |
-| **Roll number** | 43 |
-| **Registration number** | 12306652 |
-| **Course** | Cluster Computing (INT315) |
-
 Built with **Apache Spark 4.2 (PySpark)**, **GraphFrames** (the DataFrame-based GraphX API for Python) and **Spark MLlib ALS**, using the **MovieLens** dataset.
 
 **Live dashboard:** https://movie-recommendation-spark.onrender.com (free hosting: the first visit after a quiet spell can take about a minute to wake up)
