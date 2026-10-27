@@ -1,0 +1,103 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+26/10/23 14:34:21 WARN Shell: Did not find winutils.exe: java.io.FileNotFoundException: java.io.FileNotFoundException: HADOOP_HOME and hadoop.home.dir are unset. -see https://cwiki.apache.org/confluence/display/HADOOP2/WindowsProblems
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/10/23 14:34:22 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+netlib-blas: JNI_OnLoad: dlopen(libopenblas.dll) failed: LoadLibrary failed
+netlib-lapack: JNI_OnLoad: dlopen(libopenblas.dll) failed: LoadLibrary failed
+26/10/23 14:37:46 ERROR Utils: Uncaught exception in thread executor-heartbeater
+java.lang.NullPointerException: Cannot invoke "java.util.concurrent.ConcurrentHashMap.isEmpty()" because the return value of "org.apache.spark.sql.util.PartitionKeyedAccumulator.byPartition()" is null
+	at org.apache.spark.sql.util.PartitionKeyedAccumulator.isZero(PartitionKeyedAccumulator.scala:51)
+	at org.apache.spark.executor.Executor.$anonfun$reportHeartBeat$2(Executor.scala:1536)
+	at org.apache.spark.executor.Executor.$anonfun$reportHeartBeat$2$adapted(Executor.scala:1536)
+	at scala.collection.immutable.Vector.filterImpl(Vector.scala:166)
+	at scala.collection.immutable.Vector.filterImpl(Vector.scala:116)
+	at scala.collection.StrictOptimizedIterableOps.filterNot(StrictOptimizedIterableOps.scala:220)
+	at scala.collection.StrictOptimizedIterableOps.filterNot$(StrictOptimizedIterableOps.scala:220)
+	at scala.collection.immutable.Vector.filterNot(Vector.scala:116)
+	at org.apache.spark.executor.Executor.$anonfun$reportHeartBeat$1(Executor.scala:1536)
+	at scala.collection.IterableOnceOps.foreach(IterableOnce.scala:630)
+	at scala.collection.IterableOnceOps.foreach$(IterableOnce.scala:628)
+	at scala.collection.AbstractIterable.foreach(Iterable.scala:936)
+	at org.apache.spark.executor.Executor.reportHeartBeat(Executor.scala:1530)
+	at org.apache.spark.executor.Executor.$anonfun$heartbeater$1(Executor.scala:484)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at org.apache.spark.util.Utils$.logUncaughtExceptions(Utils.scala:1963)
+	at org.apache.spark.Heartbeater$$anon$1.run(Heartbeater.scala:46)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:358)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+Spark 4.2.0 | master local[*] | parallelism 12
+
+=== 1. Data ingestion and cleaning ===
+    raw ratings: 100,836 -> clean ratings: 100,836
+    (15.73s)
+
+=== 2. Exploratory distributed analysis ===
+    610 users, 9,724 movies, avg rating 3.502, sparsity 98.3%
+    (7.53s)
+
+=== 3. Graph analysis - user-movie graph ===
+    vertices 10,352, edges 100,836
+    most-rated movie: Forrest Gump (1994)
+    top PageRank movie: Forrest Gump (1994)
+    (21.26s)
+
+=== 4. Graph analysis - user communities ===
+    6,090 similarity edges, 24 communities, 1 connected components
+    (24.49s)
+
+    train 80,886 ratings | test 19,950 ratings
+
+=== 5. Model A (rating prediction) - tuning ===
+    best rank=10 regParam=0.2
+    (42.23s)
+
+=== 6. Model A (rating prediction) - train and evaluate ===
+    rmse: 0.8806
+    mae: 0.6905
+    r2: 0.2768
+    test_predictions: 19153
+    baseline_global_mean_rmse: 1.0435
+    baseline_movie_mean_rmse: 0.9629
+    train_seconds: 4.6
+    params: {'rank': 10, 'regParam': 0.2}
+    (7.51s)
+
+=== 7. Model B (top-10 recommendation) - tuning ===
+    best rank=50 alpha=1.0 regParam=0.1
+    (173.28s)
+
+=== 8. Model B (top-10 recommendation) - train and evaluate ===
+    popularity baseline      precision@10 0.1273  recall@10 0.0975  ndcg@10 0.1635
+    explicit ALS (model A)   precision@10 0.0673  recall@10 0.0474  ndcg@10 0.0756
+    implicit ALS (model B)   precision@10 0.1898  recall@10 0.2099  ndcg@10 0.2607
+    (41.12s)
+
+=== 9. Sample recommendations ===
+    user 1 liked: Tombstone (1993); Canadian Bacon (1995); Pink Floyd: The Wall (1982); Messenger: The Story of Joan of Arc, The (1999)
+    recommended: Terminator 2: Judgment Day (1991); Die Hard (1988); Raising Arizona (1987); Jaws (1975); Cinderella (1950)
+    (25.76s)
+
+=== 10. Scalability - data size ===
+    data  25%     25,228 ratings  train   4.08s  RMSE 1.0118
+    data  50%     50,659 ratings  train   3.93s  RMSE 0.9336
+    data  75%     75,844 ratings  train   4.08s  RMSE 0.8877
+    data 100%    100,836 ratings  train   3.92s  RMSE 0.8806
+    (24.14s)
+
+=== 11. Scalability - cores ===
+     1 cores  load   1.5s  graph   9.2s  ALS  12.5s  total  24.5s
+     2 cores  load   1.1s  graph   6.0s  ALS   7.7s  total  15.8s
+     4 cores  load   1.3s  graph   7.3s  ALS   6.5s  total  16.2s
+     8 cores  load   1.7s  graph  10.7s  ALS   5.2s  total  18.9s
+    (83.86s)
+
+Done. Results in C:\Users\knite\OneDrive\Desktop\cluster\outputs
+SUCCESS: The process with PID 13640 (child process of PID 9912) has been terminated.
+SUCCESS: The process with PID 9912 (child process of PID 41568) has been terminated.
+SUCCESS: The process with PID 41568 (child process of PID 10932) has been terminated.

@@ -1,0 +1,250 @@
+{
+  "dataset": "ml-latest-small",
+  "raw_ratings": 100836,
+  "data": {
+    "ratings": 100836,
+    "users": 610,
+    "movies": 9724,
+    "avgRating": 3.502,
+    "sparsity_pct": 98.3,
+    "ratings_per_user": {
+      "min": 20,
+      "median": 70,
+      "max": 2698
+    }
+  },
+  "graph_user_movie": {
+    "vertices": 10352,
+    "edges": 100836
+  },
+  "graph_user_similarity": {
+    "user_vertices": 609,
+    "similarity_edges": 6090,
+    "components": 1,
+    "largest_component_users": 609,
+    "avg_degree": 20.0,
+    "max_degree": 107,
+    "communities": 24
+  },
+  "tuning_model_a": {
+    "best": {
+      "rank": 10,
+      "regParam": 0.2
+    },
+    "grid": [
+      {
+        "rank": 10,
+        "regParam": 0.2,
+        "val_rmse": 0.8882
+      },
+      {
+        "rank": 50,
+        "regParam": 0.2,
+        "val_rmse": 0.8894
+      },
+      {
+        "rank": 20,
+        "regParam": 0.2,
+        "val_rmse": 0.8897
+      },
+      {
+        "rank": 10,
+        "regParam": 0.1,
+        "val_rmse": 0.8915
+      },
+      {
+        "rank": 50,
+        "regParam": 0.1,
+        "val_rmse": 0.8929
+      },
+      {
+        "rank": 20,
+        "regParam": 0.1,
+        "val_rmse": 0.897
+      },
+      {
+        "rank": 10,
+        "regParam": 0.05,
+        "val_rmse": 0.9474
+      },
+      {
+        "rank": 50,
+        "regParam": 0.05,
+        "val_rmse": 0.9615
+      },
+      {
+        "rank": 20,
+        "regParam": 0.05,
+        "val_rmse": 0.9636
+      }
+    ],
+    "seconds": 41.94
+  },
+  "model_a_rating_prediction": {
+    "rmse": 0.8806,
+    "mae": 0.6905,
+    "r2": 0.2768,
+    "test_predictions": 19153,
+    "baseline_global_mean_rmse": 1.0435,
+    "baseline_movie_mean_rmse": 0.9629,
+    "train_seconds": 4.6,
+    "params": {
+      "rank": 10,
+      "regParam": 0.2
+    }
+  },
+  "tuning_model_b": {
+    "best": {
+      "rank": 50,
+      "alpha": 1.0,
+      "regParam": 0.1
+    },
+    "grid": [
+      {
+        "rank": 50,
+        "alpha": 1.0,
+        "regParam": 0.1,
+        "val_ndcg@10": 0.1795
+      },
+      {
+        "rank": 20,
+        "alpha": 1.0,
+        "regParam": 0.1,
+        "val_ndcg@10": 0.1766
+      },
+      {
+        "rank": 50,
+        "alpha": 1.0,
+        "regParam": 1.0,
+        "val_ndcg@10": 0.1679
+      },
+      {
+        "rank": 20,
+        "alpha": 1.0,
+        "regParam": 1.0,
+        "val_ndcg@10": 0.1573
+      },
+      {
+        "rank": 50,
+        "alpha": 10.0,
+        "regParam": 1.0,
+        "val_ndcg@10": 0.1568
+      },
+      {
+        "rank": 20,
+        "alpha": 10.0,
+        "regParam": 1.0,
+        "val_ndcg@10": 0.1462
+      },
+      {
+        "rank": 50,
+        "alpha": 10.0,
+        "regParam": 0.1,
+        "val_ndcg@10": 0.1336
+      },
+      {
+        "rank": 20,
+        "alpha": 10.0,
+        "regParam": 0.1,
+        "val_ndcg@10": 0.1288
+      }
+    ],
+    "seconds": 173.26
+  },
+  "model_b_top10": {
+    "implicit_als": {
+      "precision@10": 0.1898,
+      "recall@10": 0.2099,
+      "ndcg@10": 0.2607
+    },
+    "explicit_als": {
+      "precision@10": 0.0673,
+      "recall@10": 0.0474,
+      "ndcg@10": 0.0756
+    },
+    "popularity_baseline": {
+      "precision@10": 0.1273,
+      "recall@10": 0.0975,
+      "ndcg@10": 0.1635
+    },
+    "train_seconds": 6.68,
+    "params": {
+      "rank": 50,
+      "alpha": 1.0,
+      "regParam": 0.1
+    }
+  },
+  "stage_seconds": {
+    "1. Data ingestion and cleaning": 15.73,
+    "2. Exploratory distributed analysis": 7.53,
+    "3. Graph analysis - user-movie graph": 21.26,
+    "4. Graph analysis - user communities": 24.49,
+    "5. Model A (rating prediction) - tuning": 42.23,
+    "6. Model A (rating prediction) - train and evaluate": 7.51,
+    "7. Model B (top-10 recommendation) - tuning": 173.28,
+    "8. Model B (top-10 recommendation) - train and evaluate": 41.12,
+    "9. Sample recommendations": 25.76,
+    "10. Scalability - data size": 24.14,
+    "11. Scalability - cores": 83.86
+  },
+  "scaling_data": [
+    {
+      "fraction": 0.25,
+      "ratings": 25228,
+      "train_seconds": 4.08,
+      "rmse": 1.0118
+    },
+    {
+      "fraction": 0.5,
+      "ratings": 50659,
+      "train_seconds": 3.93,
+      "rmse": 0.9336
+    },
+    {
+      "fraction": 0.75,
+      "ratings": 75844,
+      "train_seconds": 4.08,
+      "rmse": 0.8877
+    },
+    {
+      "fraction": 1.0,
+      "ratings": 100836,
+      "train_seconds": 3.92,
+      "rmse": 0.8806
+    }
+  ],
+  "scaling_cores": [
+    {
+      "cores": 1,
+      "load_clean_s": 1.51,
+      "graph_s": 9.18,
+      "als_train_s": 12.53,
+      "total_s": 24.48,
+      "speedup": 1.0
+    },
+    {
+      "cores": 2,
+      "load_clean_s": 1.1,
+      "graph_s": 5.99,
+      "als_train_s": 7.75,
+      "total_s": 15.78,
+      "speedup": 1.55
+    },
+    {
+      "cores": 4,
+      "load_clean_s": 1.27,
+      "graph_s": 7.28,
+      "als_train_s": 6.48,
+      "total_s": 16.17,
+      "speedup": 1.51
+    },
+    {
+      "cores": 8,
+      "load_clean_s": 1.66,
+      "graph_s": 10.68,
+      "als_train_s": 5.17,
+      "total_s": 18.94,
+      "speedup": 1.29
+    }
+  ]
+}
