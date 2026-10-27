@@ -1,0 +1,5 @@
+pyspark==4.2.0
+graphframes-py==0.12.3
+pandas
+matplotlib
+pyarrow

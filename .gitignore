@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.claude/
+*.zip
+Sample Question 1.pdf
+spark-warehouse/
+metastore_db/
+12306652/
+Octahedral_Instructions.pdf
