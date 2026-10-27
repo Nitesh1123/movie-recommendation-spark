@@ -11,6 +11,8 @@ Built with **Apache Spark 4.2 (PySpark)**, **GraphFrames** (the DataFrame-based 
 
 **Live dashboard:** https://movie-recommendation-spark.onrender.com (free hosting: the first visit after a quiet spell can take about a minute to wake up)
 
+**Source code:** https://github.com/Nitesh1123/movie-recommendation-spark
+
 > **Why GraphFrames instead of GraphX?** GraphX only has a Scala/Java API. GraphFrames is the official graph library for PySpark. It runs on the same Spark engine, and its connected-components step uses GraphX internally (`algorithm="graphx"`).
 
 ---
