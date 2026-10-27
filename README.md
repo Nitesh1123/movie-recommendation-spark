@@ -9,6 +9,8 @@
 
 Built with **Apache Spark 4.2 (PySpark)**, **GraphFrames** (the DataFrame-based GraphX API for Python) and **Spark MLlib ALS**, using the **MovieLens** dataset.
 
+**Live dashboard:** https://movie-recommendation-spark.onrender.com (free hosting: the first visit after a quiet spell can take about a minute to wake up)
+
 > **Why GraphFrames instead of GraphX?** GraphX only has a Scala/Java API. GraphFrames is the official graph library for PySpark. It runs on the same Spark engine, and its connected-components step uses GraphX internally (`algorithm="graphx"`).
 
 ---
@@ -53,6 +55,8 @@ cluster/
 ├── run_pipeline.py          # runs every stage end to end
 ├── show_train_test_split.py # shows the train/test split and saves screenshots of it
 ├── verify.py                # automated PASS/FAIL checks of the results
+├── export_dashboard_data.py # saves top-10 recommendations for every user
+├── dashboard/app.py         # Streamlit dashboard (reads outputs/, no Spark needed)
 ├── presentation/            # project slides (PowerPoint)
 ├── requirements.txt
 ├── data/ml-latest-small/    # MovieLens dataset (100,836 ratings)
@@ -104,6 +108,33 @@ python show_train_test_split.py
 Useful options: `--user 42` (whose recommendations to show), `--cores 4`, `--knn 10`, `--data-dir data/ml-25m` (any MovieLens CSV dataset, for bigger scalability tests).
 
 > **Windows note:** the jars are loaded with `spark.driver.extraClassPath` instead of `spark.jars.packages`, and results are saved with pandas instead of Spark writers. Together these avoid the usual `winutils.exe` / `HADOOP_HOME` error on Windows.
+
+---
+
+### Dashboard
+
+The dashboard has five tabs:
+- **Overview:** dataset stats and key results
+- **Recommend movies:** pick any user (1–610) to see their favourites next to their top-10 recommendations
+- **Graph insights:** PageRank, communities and movies liked together
+- **Models & scalability:** model results and scaling experiments
+- **Train / test split:** the split screenshots and rating balance
+
+![Dashboard overview](docs/screenshots/dash_overview.png)
+
+It only reads saved results, so it runs without Spark. Recommendations for every user come from `export_dashboard_data.py`, which needs a pipeline run first.
+
+To run it locally:
+
+```bash
+pip install -r dashboard/requirements.txt
+```
+
+```bash
+streamlit run dashboard/app.py
+```
+
+The live version is hosted on Render's free plan. It installs `dashboard/requirements.txt` and redeploys on every push to `main`.
 
 ---
 
